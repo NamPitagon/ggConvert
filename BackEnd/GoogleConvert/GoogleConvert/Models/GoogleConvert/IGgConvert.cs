@@ -1,8 +1,8 @@
 ﻿using GoogleConvert.Dto;
 
-namespace GoogleConvert.Models.IConvertData
+namespace GoogleConvert.Models.GoogleConvert
 {
-    public interface IggConvert
+    public interface IGgConvert
     {
         public ResponseData ggConvertData(string inputType, string outputType, string inputValue);
     }

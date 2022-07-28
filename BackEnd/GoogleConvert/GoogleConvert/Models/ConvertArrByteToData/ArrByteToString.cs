@@ -1,24 +1,30 @@
 ﻿using GoogleConvert.Dto;
-using GoogleConvert.Share;
+using GoogleConvert.Models.ConvertDataToArrByte;
 using System.Text;
 
-namespace GoogleConvert.Models.ConvertArrByteToData
+namespace GoogleConvert.Models.ConvertArrbyteToData
 {
-    public class ArrByteToString : ConvertArrByteToData
+    public class ArrByteToString : ArrByteToData
     {
-        ResponseData ArrByteToData(string inType, byte[] bytes)
+        public override ResponseData ArrayByteToData(string inType, byte[] bytes)
         {
             ResponseData result = new ResponseData();
-            if (inType == "String")
+            if (bytes == null)
             {
-                string rslt = ShareFunction.ConvertArrByteToString(bytes);
-                result.value = rslt;
-                result.success = true;
+                result.value = "";
+                result.success = false;
+                result.message = "Error";
             }
             else
             {
-                result.value = Encoding.UTF8.GetString(bytes);
+                if (inType == "String")
+                {
+                    string rslt = DataToArrByte.FormatArrByteToString(bytes);
+                    result.value = rslt;
+                }
+                else result.value = Encoding.UTF8.GetString(bytes);
                 result.success = true;
+                result.message = "OK";
             }
             return result;
         }

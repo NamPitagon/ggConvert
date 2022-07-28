@@ -1,24 +1,30 @@
 ﻿using GoogleConvert.Dto;
-using GoogleConvert.Share;
+using GoogleConvert.Models.ConvertDataToArrByte;
 using System;
 
-namespace GoogleConvert.Models.ConvertArrByteToData
+namespace GoogleConvert.Models.ConvertArrbyteToData
 {
-    public class ArrByteToBase64 : ConvertArrByteToData
+    public class ArrByteToBase64 : ArrByteToData
     {
-        ResponseData ArrByteToData(string inType, byte[] bytes)
+        public override ResponseData ArrayByteToData(string inType, byte[] bytes)
         {
             ResponseData result = new ResponseData();
-            if (inType == "Base64")
+            if (bytes == null)
             {
-                string resultArrByte = ShareFunction.ConvertArrByteToString(bytes);
-                result.value = resultArrByte;
-                result.success = true;
+                result.value = "";
+                result.success = false;
+                result.message = "Error";
             }
             else
             {
-                result.value = Convert.ToBase64String(bytes, 0, bytes.Length);
+                if (inType == "Base64")
+                {
+                    string resultArrByte = DataToArrByte.FormatArrByteToString(bytes);
+                    result.value = resultArrByte;
+                }
+                else result.value = Convert.ToBase64String(bytes, 0, bytes.Length);
                 result.success = true;
+                result.message = "OK";
             }
             return result;
         }

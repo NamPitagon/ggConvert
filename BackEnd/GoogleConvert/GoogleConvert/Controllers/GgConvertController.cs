@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GoogleConvert.Dto;
+using GoogleConvert.Models.GoogleConvert;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace GoogleConvert.Controllers
@@ -8,10 +10,16 @@ namespace GoogleConvert.Controllers
     public class GgConvertController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-
         public GgConvertController(IConfiguration configuration)
         {
             _configuration = configuration;
+        }
+        public GgConvert googleConvert = new GgConvert();
+
+        [HttpPost("convert")]
+        public ResponseData ggConvertData(string inputType, string outputType, string inputValue)
+        {
+            return googleConvert.ggConvertData(inputType, outputType, inputValue);
         }
     }
 }

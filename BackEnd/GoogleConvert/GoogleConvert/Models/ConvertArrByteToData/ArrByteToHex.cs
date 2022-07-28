@@ -1,33 +1,38 @@
 ﻿using GoogleConvert.Dto;
-using GoogleConvert.Share;
+using GoogleConvert.Models.ConvertDataToArrByte;
 using System;
 using System.Text;
 
-namespace GoogleConvert.Models.ConvertArrByteToData
+namespace GoogleConvert.Models.ConvertArrbyteToData
 {
-    public class ArrByteToHex : ConvertArrByteToData
+    public class ArrByteToHex : ArrByteToData
     {
-        ResponseData ArrByteToData(string inType, byte[] bytes)
+        public override ResponseData ArrayByteToData(string inType, byte[] bytes)
         {
             ResponseData result = new ResponseData();
-            if (inType == "String")
+            if (bytes == null)
             {
-                StringBuilder strBuilder = new StringBuilder(bytes.Length * 2);
-                foreach (byte b in bytes)
-                    strBuilder.AppendFormat("{0:X2}", b);
-                result.value = strBuilder.ToString();
-                result.success = true;
-            }
-            else if (inType == "Hex")
-            {
-                string rslt = ShareFunction.ConvertArrByteToString(bytes);
-                result.value = rslt;
-                result.success = true;
+                result.value = "";
+                result.success = false;
+                result.message = "Error";
             }
             else
             {
-                result.value = BitConverter.ToString(bytes);
+                if (inType == "String")
+                {
+                    StringBuilder strBuilder = new StringBuilder(bytes.Length * 2);
+                    foreach (byte b in bytes)
+                        strBuilder.AppendFormat("{0:X2}", b);
+                    result.value = strBuilder.ToString();
+                }
+                else if (inType == "Hex")
+                {
+                    string rslt = DataToArrByte.FormatArrByteToString(bytes);
+                    result.value = rslt;
+                }
+                else result.value = BitConverter.ToString(bytes);
                 result.success = true;
+                result.message = "OK";
             }
             return result;
         }
